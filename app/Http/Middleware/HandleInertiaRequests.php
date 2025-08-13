@@ -39,12 +39,13 @@ class HandleInertiaRequests extends Middleware
                 'env' => config('app.env'),
             ],
             'settings' => config('settings'),
+            'enabled_features' => config('enabled_features'),
             'activeOrganization' => session('activeOrganization'),
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),
                 'error' => fn () => $request->session()->get('error'),
             ],
-            'scheduledMaintenanceMessage' => $cheduledMaintenanceMessageSetting?->value ?? false
+            'scheduledMaintenanceMessage' => $cheduledMaintenanceMessageSetting?->value ?? false,
         ];
 
         if (auth()->user()) {

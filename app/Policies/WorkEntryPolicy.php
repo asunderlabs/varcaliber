@@ -8,6 +8,11 @@ use Illuminate\Auth\Access\Response;
 
 class WorkEntryPolicy
 {
+    public function before(User $user)
+    {
+        return in_array('time_tracking', config('enabled_features'));
+    }
+    
     /**
      * Determine whether the user can view any models.
      */

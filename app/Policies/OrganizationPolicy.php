@@ -26,6 +26,18 @@ class OrganizationPolicy
     }
 
     /**
+     * Determine whether the user can view the organization stats.
+     */
+    public function viewStats(User $user, Organization $organization): bool
+    {
+        if (!in_array('organization_stats', config('enabled_features'))) {
+            return false;
+        }
+        
+        return $this->view($user, $organization);
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
@@ -48,4 +60,5 @@ class OrganizationPolicy
     {
         return $user->is_admin;
     }
+
 }

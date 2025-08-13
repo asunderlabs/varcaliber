@@ -29,9 +29,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if (config('app.key') && Schema::hasTable('settings')) {
+
             foreach (Setting::all() as $setting) {
                 Config::set('settings.' . $setting->key, $setting->value);
             }
+
+            $features = [];
+            $features[] = config('settings.issues_enabled') === 'true' ? 'issues' : null;
+            $features[] = config('settings.time_tracking_enabled') === 'true' ? 'time_tracking' : null;
+            $features[] = config('settings.reports_enabled') === 'true' ? 'reports' : null;
+            $features[] = config('settings.organization_stats_enabled') === 'true' ? 'organization_stats' : null;
+
+            Config::set('enabled_features', array_values(array_filter($features)));
         }
 
         LogViewer::auth(function ($request) {

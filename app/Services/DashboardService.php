@@ -17,26 +17,29 @@ class DashboardService
 
         $invoices = $organization->issuedInvoices->reverse()->where('paid', false);
 
-        $statCards = [
-            [
+        $statCards = [];
+
+        if (in_array('reports', config('enabled_features'))) {
+            $statCards[] = [
                 'title' => 'Current Period',
                 'stat' => $billTotal ? '$' . number_format($billTotal / 100, 2) : '$0',
                 'statLinkText' => 'View Billing Summary',
                 'statLinkUrl' => route('billing.index'),
-            ],
-            [
+            ];
+
+            $statCards[] = [
                 'title' => 'Work Reported',
                 'stat' => number_format($hours, 2) . ' hrs',
                 'statLinkText' => 'View Report',
                 'statLinkUrl' => route('reports.index'),
-            ],
-            [
-                'title' => 'Unpaid Invoices',
-                'stat' => (string) $invoices->count(),
-                'statLinkText' => 'View Invoices',
-                'statLinkUrl' => route('invoices.index'),
+            ];
+        }
 
-            ],
+        $statCards[] = [
+            'title' => 'Unpaid Invoices',
+            'stat' => (string) $invoices->count(),
+            'statLinkText' => 'View Invoices',
+            'statLinkUrl' => route('invoices.index'),
         ];
 
         return [
@@ -68,25 +71,29 @@ class DashboardService
 
         $invoicesTotal = Invoice::where('paid', 0)->sum('total');
 
-        $statCards = [
-            [
+        $statCards = [];
+
+        if (in_array('time_tracking', config('enabled_features'))) {
+            $statCards[] = [
                 'title' => 'Unreported Work',
                 'stat' => ($unreportedMinutes ? number_format($unreportedMinutes / 60, 1) : '0') . ' hrs',
                 'statLinkText' => 'View Reports',
                 'statLinkUrl' => route('admin.hours.index'),
-            ],
-            [
-                'title' => 'Accounts Billable',
-                'stat' => $billableTotal ? '$' . number_format($billableTotal / 100, 2) : '$0',
-                'statLinkText' => 'View Reports',
-                'statLinkUrl' => route('admin.hours.index'),
-            ],
-            [
-                'title' => 'Unpaid Invoices',
-                'stat' => $invoicesTotal ? '$' . number_format($invoicesTotal / 100, 2) : '$0',
-                'statLinkText' => 'View Invoices',
-                'statLinkUrl' => route('admin.invoices.index'),
-            ],
+            ];
+        }
+
+        $statCards[] = [
+            'title' => 'Accounts Billable',
+            'stat' => $billableTotal ? '$' . number_format($billableTotal / 100, 2) : '$0',
+            'statLinkText' => 'View Reports',
+            'statLinkUrl' => route('admin.hours.index'),
+        ];
+
+        $statCards[] = [
+            'title' => 'Unpaid Invoices',
+            'stat' => $invoicesTotal ? '$' . number_format($invoicesTotal / 100, 2) : '$0',
+            'statLinkText' => 'View Invoices',
+            'statLinkUrl' => route('admin.invoices.index'),
         ];
 
         return [

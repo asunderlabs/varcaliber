@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Context;
 
 class IssuePolicy
 {
+    public function before(User $user)
+    {
+        return in_array('issues', config('enabled_features'));
+    }
+    
     /**
      * Determine whether the user can view any models.
      */

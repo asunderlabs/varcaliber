@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Gate;
 
 class Organization extends Model
 {
@@ -26,7 +27,8 @@ class Organization extends Model
     ];
 
     public $appends = [
-        'short_code'
+        'short_code',
+        'can_view_stats'
     ];
 
     public function getShortCodeAttribute()
@@ -169,5 +171,10 @@ class Organization extends Model
         //     ->first();
 
         return $lastInvoice ? $lastInvoice->number + 1 : 1;
+    }
+
+    public function getCanViewStatsAttribute()
+    {
+        return Gate::allows('viewStats', $this);
     }
 }

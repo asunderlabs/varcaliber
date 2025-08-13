@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Context;
 
 class ReportPolicy
 {
+    public function before(User $user)
+    {
+        return in_array('reports', config('enabled_features'));
+    }
+
     /**
      * Determine whether the user can view any models.
      */

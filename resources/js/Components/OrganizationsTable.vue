@@ -1,11 +1,14 @@
 <script setup>
 import Table from '@/Components/Table.vue';
 import { dayjsLocal } from '@/helpers';
+import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 const props = defineProps({
   organizations: Array
 })
+
+const page = usePage()
 
 const columns = [
   'Name',
@@ -27,11 +30,14 @@ const organizationRows = computed(() => {
       })
     }
 
-    actions = actions.concat([
-      {
-        label: 'View',
+    if (organization.can_view_stats) {
+      actions.push({
+        label: 'Stats',
         href: route('admin.organizations.show', { organization: organization.id })
-      },
+      })
+    }
+
+    actions = actions.concat([
       {
         label: 'Edit',
         href: route('admin.organizations.edit', { organization: organization.id })

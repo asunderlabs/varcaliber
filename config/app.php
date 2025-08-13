@@ -267,7 +267,7 @@ return [
     | Default Settings Configuration
     |--------------------------------------------------------------------------
     |
-    | These values can be set within the application
+    | These values can be set within the application's Settings page
     |
     */
 
@@ -279,6 +279,10 @@ return [
         'company_phone' => '',
         'company_email' => '',
         'card_processing_fee_percent' => 0,
-        'scheduled_maintenance_notification_message' => ''
+        'scheduled_maintenance_notification_message' => '',
+        'issues_enabled' => false,
+        'time_tracking_enabled' => false,
+        'reports_enabled' => false,
+        'organization_stats_enabled' => false,
     ]
 ];
