@@ -107,6 +107,9 @@ class User extends Authenticatable
         $this->notify(new AccountSummaryNotification($organization));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Organization>
+     */
     public function organizations(): BelongsToMany
     {
         return $this->belongsToMany(Organization::class);
