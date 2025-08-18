@@ -64,7 +64,7 @@ class InvoiceController extends Controller
 
         $billingCycle = Report::billingCycle();
 
-        return Inertia::render('Admin/CreateInvoice', [
+        return Inertia::render('Invoices/Create', [
             'organizations' => Organization::all(),
             'billingStart' => $billingCycle['start'],
             'billingEnd' => $billingCycle['end'],
@@ -81,7 +81,7 @@ class InvoiceController extends Controller
         Gate::authorize('create', Invoice::class);
 
         $validated = request()->validate([
-            'organization' => 'required|integer',
+            'organization_id' => 'required|integer',
             'billingStart' => 'required',
             'billingEnd' => 'required',
             'issueAt' => 'required',
@@ -89,7 +89,7 @@ class InvoiceController extends Controller
             'delivery' => 'required',
         ]);
 
-        $organization = Organization::findOrFail($validated['organization']);
+        $organization = Organization::findOrFail($validated['organization_id']);
 
         $start = (new Carbon($validated['billingStart'], 'America/Chicago'))->setTimezone('UTC');
         $end = (new Carbon($validated['billingEnd'], 'America/Chicago'))->addDay()->subMinute()->setTimezone('UTC');

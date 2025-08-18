@@ -44,7 +44,7 @@ const confirmDelete = (text, url) => {
 
   <Head :title="title" />
 
-  <BreezeAuthenticatedLayout :isAdmin="true">
+  <BreezeAuthenticatedLayout>
     <template #header>
       <PageHeader :header="title"></PageHeader>
     </template>
